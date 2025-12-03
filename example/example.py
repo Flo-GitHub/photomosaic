@@ -1,4 +1,5 @@
 from skimage import img_as_float
+from metrics.lpips import lpips
 import photomosaic as pm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -9,7 +10,8 @@ from skimage.io import imread
 #parameters
 depth = 1
 grid_dims=(45, 30) #number of tiles in (rows, columns)
-sample_size = 1000 #number of pixels to sample from each image for color analysis
+sample_size = None #number of pixels to sample from each image for color analysis (here all pixels)
+# sample_size = None (=all pixels) removes randomness from process and results are reproducible
 analyzer = partial(np.mean, axis=0) #function to analyze images in the pool (default)
 
 pool = pm.make_pool("teselas_procesadas_cv/*.jpg", analyzer=analyzer, sample_size=sample_size)
@@ -57,10 +59,17 @@ mos = pm.draw_mosaic(canvas, tiles, matches)
 plt.imshow(mos)
 plt.show()
 
-
 # cache = {}
 # mos1 = pm.draw_mosaic(canvas1, tiles1, matches1, resized_copy_cache=cache)
 # # Now cache is filled with resized copies of any images used in ``mos1``.
 
 # # This will be faster:
 # mos2 = pm.draw_mosaic(canvas2, tiles2, matches2, resized_copy_cache=cache)
+
+
+# Evaluate
+
+# REFERENCIA PARA LA MÉTRICA:
+# scaled_img está en espacio perceptual -> lo convertimos a RGB
+ref = pm.rgb(scaled_img)  # misma resolución que 'mos'
+print(lpips(ref, mos))
