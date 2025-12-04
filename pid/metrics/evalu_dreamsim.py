@@ -1,33 +1,24 @@
-import sys
-import os
 import numpy as np
 import torch
 from dreamsim import dreamsim
 from PIL import Image
 
-ruta_del_archivo = os.path.abspath(__file__)
-carpeta_donde_estoy = os.path.dirname(ruta_del_archivo)
-carpeta_del_proyecto = os.path.dirname(carpeta_donde_estoy)
-sys.path.append(carpeta_del_proyecto)
 
-print(f"Buscando módulos en: {carpeta_del_proyecto}")
-try:
-    from example.basic import image, mos
-    print("¡Importación correcta!")
-except ImportError as e:
-    print(f"Error: Python sigue sin verlo. {e}")
+# 1. Configuración de Hardware
+if torch.cuda.is_available():
+    device = "cuda"
+elif torch.backends.mps.is_available():
+    device = "mps"
+else:
+    device = "cpu"
 
-    print("Carpetas donde Python está buscando:", sys.path)
+# 2. Cargar modelo (Idealmente haz esto FUERA del bucle si comparas muchas)
+model, preprocess = dreamsim(pretrained=True, device=device)
 
-def evaluar_arrays(array_original, array_mosaico):
+def evaluate_dreamsim(array_original, array_mosaico):
     """
     Recibe dos imágenes como matrices Numpy (H, W, C) y calcula su similitud.
     """
-    # 1. Configuración de Hardware
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    
-    # 2. Cargar modelo (Idealmente haz esto FUERA del bucle si comparas muchas)
-    model, preprocess = dreamsim(pretrained=True, device=device)
 
     # 3. Función auxiliar interna para convertir Numpy -> PIL
     def preparar_imagen(arr):
@@ -62,20 +53,3 @@ def evaluar_arrays(array_original, array_mosaico):
     except Exception as e:
         print(f"Error procesando los arrays: {e}")
         return None
-
-# --- EJEMPLO DE USO (Simulando tu programa) ---
-if __name__ == "__main__":
-    # Imaginemos que 'photomosaic' te ha dado estos dos arrays:
-    # (Creamos ruido aleatorio solo para probar que el código no falla)
-    print("Generando arrays de prueba...")
-    
-    # Imagen Original
-    imagen_numpy_1 = image
-    
-    # Fotomosaico
-    imagen_numpy_2 = mos
-
-    # LLAMADA A LA FUNCIÓN
-    score = evaluar_arrays(imagen_numpy_1, imagen_numpy_2)
-    
-    print(f"Distancia calculada directamente desde Numpy: {score:.4f}")
