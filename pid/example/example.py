@@ -1,11 +1,12 @@
 from skimage import img_as_float
-from metrics.lpips import lpips
 import photomosaic as pm
 import matplotlib.pyplot as plt
 import numpy as np
 from skimage import data
 from functools import partial
 from skimage.io import imread
+
+from pid_metrics.lpips import evaluate_lpips
 
 #parameters
 depth = 1
@@ -72,4 +73,4 @@ plt.show()
 # REFERENCIA PARA LA MÉTRICA:
 # scaled_img está en espacio perceptual -> lo convertimos a RGB
 ref = pm.rgb(scaled_img)  # misma resolución que 'mos'
-print(lpips(ref, mos))
+print(evaluate_lpips(ref, mos))

@@ -2,7 +2,6 @@ import numpy as np
 import torch
 import lpips
 
-
 # Para usar GPU si está disponible (mucho más rápido)
 if torch.cuda.is_available():
     device = "cuda"
@@ -11,11 +10,10 @@ elif torch.backends.mps.is_available():
 else:
     device = "cpu"
 
-
 # Crear modelo LPIPS (AlexNet por defecto)
 lpips_model = lpips.LPIPS(net='alex').to(device).eval()
 
-def lpips(img_ref_np: np.ndarray,
+def evaluate_lpips(img_ref_np: np.ndarray,
                      img_mosaic_np: np.ndarray,
                      model=lpips_model,
                      device=device) -> float:
