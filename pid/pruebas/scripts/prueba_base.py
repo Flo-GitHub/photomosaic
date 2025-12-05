@@ -44,10 +44,10 @@ USAR_CACHE_REDIMENSIONADOS = True
 def realizar_prueba(
     nombre_prueba: str,
     carpeta_teselas: str = "pid/pruebas/teselas_menos_variedad",
-    grid_dims: tuple[int, int] = (45, 30),
-    usar_adaptacion_pool: bool = True,
+    grid_dims: tuple[int, int] = (60, 40),
+    usar_adaptacion_pool: bool = False,
     usar_espacio_perceptual: bool = True,
-    depth: int = 1,
+    depth: int = 0,
     analyzer_pool = partial(np.mean, axis=0),
     tile_color_aggregator = partial(np.mean, axis=0),
 ):
@@ -169,7 +169,13 @@ def realizar_prueba(
         }
 
         # Referencia con misma resolución (RGB)
-        ref_rgb = pm.rgb(scaled_img)
+        if usar_espacio_perceptual:
+            # scaled_img está en espacio perceptual -> convertir a RGB
+            ref_rgb = pm.rgb(scaled_img)
+        else:
+            # scaled_img ya está en RGB -> usar directamente
+            ref_rgb = scaled_img
+
         ref_rgb = np.clip(ref_rgb, 0.0, 1.0).astype(np.float32)
         mos_rgb_f = np.clip(mos_rgb, 0.0, 1.0).astype(np.float32)
 
@@ -210,13 +216,22 @@ def realizar_prueba(
 def _extraer_tipo_desde_nombre(nombre_prueba: str):
     """
     Convención: nombre_prueba = 'prueba_<tipo>_<config>...'
-    Ejemplo:    'prueba_grid_dims_45x30' -> tipo = 'grid_dims'
 
-    Si no coincide, devuelve None y se usan directamente CARPETA_RESULTADOS_BASE.
+    Ejemplos:
+      'prueba_grid_dims_45x30'              -> tipo = 'grid_dims'
+      'prueba_usar_adaptacion_pool_True'    -> tipo = 'usar_adaptacion_pool'
+      'prueba_usar_espacio_perceptual_False'-> tipo = 'usar_espacio_perceptual'
+
+    Implementación:
+      - Spliteamos por '_'
+      - Verificamos que empiece por 'prueba' y tenga al menos 3 partes.
+      - Consideramos que la ÚLTIMA parte es la configuración (p.ej. 'True', '45x30')
+      - El tipo es todo lo que hay entre medias unido con '_'.
     """
     partes = nombre_prueba.split("_")
     if len(partes) >= 3 and partes[0] == "prueba":
-        return partes[1]
+        tipo = "_".join(partes[1:-1])
+        return tipo
     return None
 
 

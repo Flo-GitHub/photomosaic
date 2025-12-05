@@ -4,7 +4,7 @@ from dreamsim import dreamsim
 from PIL import Image
 
 
-# 1. Configuración de Hardware
+# Configuración de Hardware
 if torch.cuda.is_available():
     device = "cuda"
 elif torch.backends.mps.is_available():
@@ -12,7 +12,7 @@ elif torch.backends.mps.is_available():
 else:
     device = "cpu"
 
-# 2. Cargar modelo (Idealmente haz esto FUERA del bucle si comparas muchas)
+# Cargar modelo (Idealmente haz esto FUERA del bucle si comparas muchas)
 model, preprocess = dreamsim(pretrained=True, device=device)
 
 def evaluate_dreamsim(array_original, array_mosaico):
@@ -20,7 +20,7 @@ def evaluate_dreamsim(array_original, array_mosaico):
     Recibe dos imágenes como matrices Numpy (H, W, C) y calcula su similitud.
     """
 
-    # 3. Función auxiliar interna para convertir Numpy -> PIL
+    # Función auxiliar interna para convertir Numpy -> PIL
     def preparar_imagen(arr):
         # Asegurarnos de que sea una copia para no modificar el original
         arr = np.array(arr)
@@ -36,7 +36,7 @@ def evaluate_dreamsim(array_original, array_mosaico):
                 
         return Image.fromarray(arr).convert('RGB')
 
-    # 4. Procesar las imágenes
+    # Procesar las imágenes
     try:
         pil_orig = preparar_imagen(array_original)
         pil_mos = preparar_imagen(array_mosaico)
@@ -44,7 +44,7 @@ def evaluate_dreamsim(array_original, array_mosaico):
         img_ref = preprocess(pil_orig).to(device)
         img_mos = preprocess(pil_mos).to(device)
         
-        # 5. Calcular distancia
+        # Calcular distancia
         with torch.no_grad():
             distancia = model(img_ref, img_mos)
             
