@@ -18,7 +18,7 @@ datos_var <- datos %>%
 
 # 2) Normalización teórica --------------------------------------------------
 # SSIM:      [0,1]     → ya normalizado
-# DreamSim:  [0,1]     → ya normalizado
+# DreamSim:  0=idéntico → invertimos
 # LPIPS:     0=idéntico → invertimos
 # PSNR:      [0,∞)     → escalamos con 60 dB ≈ idéntico (paper normalization logic)
 
@@ -27,7 +27,7 @@ PSNR_MAX_THEO <- 60  # techo razonable para "idéntico"
 datos_norm <- datos_var %>%
   mutate(
     ssim_norm     = ssim,
-    dreamsim_norm = dreamsim,
+    dreamsim_norm = 1 - dreamsim,
     lpips_norm    = 1 - lpips,
     psnr_norm     = pmin(psnr / PSNR_MAX_THEO, 1)
   )
@@ -60,7 +60,7 @@ plot_df <- datos_norm %>%
     metric = factor(
       metric,
       levels = c("psnr_norm", "ssim_norm", "lpips_norm", "dreamsim_norm"),
-      labels = c("PSNR", "SSIM", "LPIPS (inv.)", "DreamSim")
+      labels = c("PSNR", "SSIM", "LPIPS (inv.)", "DreamSim (inv.)")
     )
   )
 

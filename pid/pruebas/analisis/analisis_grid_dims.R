@@ -35,7 +35,7 @@ resumen_grid <- datos_grid %>%
 
 # Normalización teórica 0–1 (1 = imágenes idénticas)
 # SSIM: ya está en [0,1], mayor = mejor
-# DreamSim: asumimos [0,1], mayor = mejor
+# DreamSim: 0 = idéntico, mayor = peor -> invertimos
 # LPIPS: 0 = idéntico, mayor = peor -> invertimos
 # PSNR: [0,∞); tomamos 60 dB ≈ "idéntico" y reescalamos
 
@@ -44,7 +44,7 @@ PSNR_MAX_THEO <- 60  # puedes ajustar si quieres otro techo
 resumen_norm <- resumen_grid %>%
   mutate(
     ssim_norm     = ssim_med,
-    dreamsim_norm = dreamsim_med,
+    dreamsim_norm = 1 - dreamsim_med,
     lpips_norm    = 1 - lpips_med,
     psnr_norm     = pmin(psnr_med / PSNR_MAX_THEO, 1)
   )
@@ -62,7 +62,7 @@ plot_df <- resumen_norm %>%
     metric = factor(
       metric,
       levels = c("psnr_norm", "ssim_norm", "lpips_norm", "dreamsim_norm"),
-      labels = c("PSNR", "SSIM", "LPIPS (inv.)", "DreamSim")
+      labels = c("PSNR", "SSIM", "LPIPS (inv.)", "DreamSim (inv.)")
     )
   )
 
