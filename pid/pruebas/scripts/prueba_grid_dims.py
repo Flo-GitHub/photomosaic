@@ -6,16 +6,17 @@ def prueba_grid_dims():
         (30, 20),
         (45, 30),
         (60, 40),
-        (80, 50),
-        (100, 70),
+        (75, 50),
+        (90, 60),
+        (105, 70),
         (120, 80),
+        (135, 90),
         (150, 100)
     ]
 
     for dim in dims:
         realizar_prueba(
             nombre_prueba=f"prueba_grid_dims_{dim[0]}x{dim[1]}",
-            carpeta_teselas="pid/pruebas/teselas_menos_variedad",
             grid_dims=dim,
         )
 

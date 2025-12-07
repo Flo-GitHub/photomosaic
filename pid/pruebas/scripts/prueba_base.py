@@ -43,7 +43,7 @@ USAR_CACHE_REDIMENSIONADOS = True
 
 def realizar_prueba(
     nombre_prueba: str,
-    carpeta_teselas: str = "pid/pruebas/teselas_menos_variedad",
+    carpeta_teselas: str = "pid/pruebas/teselas_mas_variedad",
     grid_dims: tuple[int, int] = (60, 40),
     usar_adaptacion_pool: bool = False,
     usar_espacio_perceptual: bool = True,

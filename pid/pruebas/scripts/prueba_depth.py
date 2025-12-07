@@ -6,11 +6,8 @@ def prueba_depth():
     ]
 
     for depth in depths:
-        # también ajustar grid_dims para que no haya demasiadas teselas
         realizar_prueba(
             nombre_prueba=f"prueba_depth_{depth}",
-            carpeta_teselas="pid/pruebas/teselas_menos_variedad",
-            grid_dims=(45, 30),
             depth=depth,
         )
 

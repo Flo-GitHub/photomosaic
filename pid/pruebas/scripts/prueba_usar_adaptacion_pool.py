@@ -8,7 +8,6 @@ def prueba_usar_adaptacion_pool():
     for usar_adaptacion in usar_adaptacion_pool:
         realizar_prueba(
             nombre_prueba=f"prueba_usar_adaptacion_pool_{usar_adaptacion}",
-            carpeta_teselas="pid/pruebas/teselas_menos_variedad",
             usar_adaptacion_pool=usar_adaptacion,
         )
 
