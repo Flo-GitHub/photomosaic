@@ -39,7 +39,7 @@ setup(
         'Programming Language :: Python :: 3.5',
     ],
     keywords='art image color mosaic',
-    packages=['photomosaic'],
+    packages=['photomosaic', 'pid', 'pid.pruebas', 'pid.metrics', 'pid.pruebas.scripts'],
     python_requires=">=3.6",
     install_requires=requires,
     extras_require=extras_require
