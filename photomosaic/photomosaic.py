@@ -560,7 +560,7 @@ def partition(image, grid_dims, mask=None, depth=0, split_thresh=10):
     tile_height = image.shape[0] // grid_dims[0]
     tile_width = image.shape[1] // grid_dims[1]
     tiles = []
-    total = np.product(grid_dims)
+    total = np.prod(grid_dims)
     with tqdm(total=total, desc='partitioning: depth 0') as pbar:
         for y in range(grid_dims[0]):
             for x in range(grid_dims[1]):

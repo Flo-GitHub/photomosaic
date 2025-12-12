@@ -5,3 +5,8 @@ requests
 scikit-image
 scipy
 tqdm
+opencv-python
+Pillow
+lpips
+torch
+dreamsim

@@ -7,7 +7,7 @@ image = data.chelsea() # ahora es una imagen de gato
 
 print(image.shape)
 
-pool = pm.make_pool("teselas_procesadas_cv/*.jpg")
+pool = pm.make_pool("pid/pruebas/teselas_menos_variedad/*.jpg")
 mos = pm.basic_mosaic(image, pool, (30, 45))
 
 plt.imshow(mos)

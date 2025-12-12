@@ -10,7 +10,7 @@ import numpy as np
 image = data.coffee()
 
 # 2. Generar el mosaico
-pool = pm.make_pool("teselas_procesadas_cv/*.jpg")
+pool = pm.make_pool("pid/pruebas/teselas_menos_variedad/*.jpg")
 mos = pm.basic_mosaic(image, pool, (50, 75))
 
 # 3. Redimensionar
